@@ -1,0 +1,1935 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1e3a8a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MES Learn">
+<link rel="manifest" href="manifest.json">
+<title>MES Training — Strauss</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #060e1f;
+  --bg2: #0d1b38;
+  --bg3: #102050;
+  --card: #0f2050;
+  --border: rgba(96,165,250,0.18);
+  --blue: #3b82f6;
+  --blue2: #1d4ed8;
+  --cyan: #22d3ee;
+  --gold: #fbbf24;
+  --green: #22c55e;
+  --red: #ef4444;
+  --text: #f0f6ff;
+  --text2: #94a3b8;
+  --text3: #64748b;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow: 0 8px 32px rgba(0,0,50,0.5);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { height: 100%; }
+body {
+  font-family: 'Heebo', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  direction: rtl;
+}
+body.ltr { direction: ltr; font-family: 'Heebo', sans-serif; }
+
+/* ===== SCREENS ===== */
+.screen { display: none; min-height: 100vh; animation: fadeIn .25s ease; }
+.screen.active { display: flex; flex-direction: column; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ===== LANGUAGE SCREEN ===== */
+#screen-lang {
+  background: radial-gradient(ellipse 120% 80% at 50% 0%, #1e3a8a 0%, #060e1f 65%);
+  align-items: center; justify-content: center;
+  padding: 40px 24px;
+  text-align: center;
+}
+.lang-logo { font-size: 72px; margin-bottom: 16px; animation: pulse 2.5s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+.lang-title { font-size: 28px; font-weight: 800; color: var(--text); line-height: 1.2; margin-bottom: 6px; }
+.lang-subtitle { font-size: 14px; color: var(--text2); margin-bottom: 48px; }
+.lang-btns { display: flex; flex-direction: column; gap: 16px; width: 100%; max-width: 280px; }
+.lang-btn {
+  padding: 18px 24px; border-radius: var(--radius); border: 2px solid var(--border);
+  background: rgba(255,255,255,0.05); color: var(--text);
+  font-family: 'Heebo', sans-serif; font-size: 18px; font-weight: 700;
+  cursor: pointer; transition: all .2s; display: flex; align-items: center; justify-content: center; gap: 12px;
+}
+.lang-btn:hover, .lang-btn:active { background: var(--blue); border-color: var(--blue); transform: scale(1.02); }
+.lang-btn .flag { font-size: 28px; }
+
+/* ===== HEADER ===== */
+.app-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px 12px;
+  background: linear-gradient(180deg, var(--bg2) 0%, transparent 100%);
+  position: sticky; top: 0; z-index: 100;
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+}
+.header-logo { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; }
+.header-logo span { color: var(--cyan); }
+.header-right { display: flex; align-items: center; gap: 10px; }
+.lang-toggle {
+  background: rgba(255,255,255,0.08); border: 1px solid var(--border);
+  border-radius: 8px; padding: 6px 12px; color: var(--text2);
+  font-family: 'Heebo', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer;
+}
+.lang-toggle:active { background: var(--blue); color: white; }
+.progress-ring { width: 36px; height: 36px; }
+.progress-ring circle { fill: none; stroke-width: 3; }
+.progress-ring .track { stroke: rgba(255,255,255,0.08); }
+.progress-ring .fill { stroke: var(--cyan); stroke-linecap: round; transition: stroke-dashoffset .4s ease; }
+
+/* ===== HOME SCREEN ===== */
+#screen-home { background: var(--bg); }
+.home-hero {
+  padding: 20px 20px 0;
+  background: linear-gradient(160deg, #0d2060 0%, var(--bg) 60%);
+}
+.hero-welcome { font-size: 13px; color: var(--text2); margin-bottom: 4px; }
+.hero-title { font-size: 26px; font-weight: 800; line-height: 1.2; margin-bottom: 16px; }
+.hero-title span { color: var(--cyan); }
+.progress-bar-container { margin-bottom: 20px; }
+.progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text2); margin-bottom: 6px; }
+.progress-bar { height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--cyan)); border-radius: 3px; transition: width .5s ease; }
+
+.home-grid { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.section-label { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; padding: 0 4px; }
+
+/* Module Cards */
+.module-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  cursor: pointer;
+  transition: all .2s;
+  display: flex; align-items: center; gap: 14px;
+  position: relative; overflow: hidden;
+}
+.module-card::before {
+  content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 4px;
+  background: var(--card-accent, var(--blue));
+}
+.module-card:active { transform: scale(0.98); background: #152a60; }
+.module-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; flex-shrink: 0;
+  background: var(--card-icon-bg, rgba(59,130,246,0.15));
+}
+.module-info { flex: 1; min-width: 0; }
+.module-title { font-size: 15px; font-weight: 700; line-height: 1.3; margin-bottom: 3px; }
+.module-meta { font-size: 12px; color: var(--text2); display: flex; align-items: center; gap: 8px; }
+.module-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text3); }
+.module-status { flex-shrink: 0; }
+.status-badge {
+  font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 6px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.status-badge.done { background: rgba(34,197,94,0.15); color: var(--green); }
+.status-badge.prog { background: rgba(251,191,36,0.15); color: var(--gold); }
+.status-badge.new { background: rgba(59,130,246,0.15); color: var(--blue); }
+
+/* Quick Actions */
+.quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.quick-btn {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 14px; cursor: pointer; transition: all .2s; text-align: center;
+}
+.quick-btn:active { transform: scale(0.97); background: var(--bg3); }
+.quick-btn .q-icon { font-size: 24px; margin-bottom: 6px; }
+.quick-btn .q-label { font-size: 12px; font-weight: 600; color: var(--text2); }
+
+/* ===== LESSON SCREEN ===== */
+#screen-lesson { background: var(--bg); }
+.lesson-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px 20px; border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+}
+.back-btn {
+  width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--border);
+  background: transparent; color: var(--text); cursor: pointer;
+  display: flex; align-items: center; justify-content: center; font-size: 20px;
+}
+.lesson-title-header { flex: 1; }
+.lesson-title-header h2 { font-size: 16px; font-weight: 700; }
+.lesson-title-header p { font-size: 12px; color: var(--text2); }
+.step-counter { font-size: 12px; color: var(--text2); font-family: 'JetBrains Mono', monospace; }
+
+/* Step progress dots */
+.step-dots { display: flex; gap: 6px; padding: 12px 20px; overflow-x: auto; scrollbar-width: none; }
+.step-dots::-webkit-scrollbar { display: none; }
+.step-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  background: rgba(255,255,255,0.12); transition: all .25s;
+}
+.step-dot.active { background: var(--cyan); width: 24px; border-radius: 4px; }
+.step-dot.done { background: var(--green); }
+
+/* Step content */
+.step-content { flex: 1; overflow-y: auto; padding: 20px; }
+.step-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px; margin-bottom: 16px;
+  animation: slideIn .3s ease;
+}
+@keyframes slideIn { from { opacity:0; transform:translateX(-12px); } to { opacity:1; transform:translateX(0); } }
+.step-number { font-size: 11px; font-weight: 700; color: var(--cyan); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+.step-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; line-height: 1.4; }
+.step-card p { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: 12px; }
+.step-card ul { padding-right: 20px; }
+.step-card ul li { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: 6px; }
+
+/* Video simulation card */
+.video-sim {
+  background: #000; border-radius: var(--radius-sm); overflow: hidden;
+  margin-bottom: 16px; position: relative; aspect-ratio: 16/9;
+  cursor: pointer; border: 2px solid var(--border);
+}
+.video-sim .vs-screen {
+  width: 100%; height: 100%; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; position: relative;
+  background: linear-gradient(135deg, #0d2060 0%, #091630 100%);
+}
+.video-sim .vs-play {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: rgba(59,130,246,0.9); display: flex; align-items: center; justify-content: center;
+  font-size: 24px; color: white; margin-bottom: 12px;
+  box-shadow: 0 0 30px rgba(59,130,246,0.5); transition: all .2s;
+}
+.video-sim:active .vs-play { transform: scale(1.1); background: var(--blue); }
+.video-sim .vs-title { font-size: 13px; font-weight: 600; color: var(--text2); text-align: center; padding: 0 20px; }
+.video-sim .vs-duration { font-size: 11px; color: var(--text3); margin-top: 4px; font-family: 'JetBrains Mono', monospace; }
+.video-sim .vs-corner { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); border-radius: 6px; padding: 3px 8px; font-size: 11px; color: white; font-family: 'JetBrains Mono', monospace; }
+
+/* Simulated screen animation */
+.screen-demo {
+  background: #1a2744; border-radius: var(--radius-sm); overflow: hidden;
+  margin-bottom: 16px; border: 1px solid var(--border);
+}
+.screen-demo-bar {
+  background: #0f1c38; padding: 8px 12px; display: flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.screen-demo-bar span { font-size: 11px; color: var(--text2); font-family: 'JetBrains Mono', monospace; }
+.demo-dot { width: 8px; height: 8px; border-radius: 50%; }
+.screen-demo-body { padding: 14px; }
+.demo-row {
+  background: rgba(255,255,255,0.04); border-radius: 8px; padding: 10px 12px;
+  margin-bottom: 6px; display: flex; align-items: center; gap: 10px;
+  font-size: 13px; color: var(--text2); border: 1px solid rgba(255,255,255,0.05);
+}
+.demo-row.highlight { border-color: var(--blue); background: rgba(59,130,246,0.1); color: var(--text); }
+.demo-row.action { border-color: var(--green); background: rgba(34,197,94,0.08); }
+.demo-checkbox { width: 16px; height: 16px; border-radius: 4px; border: 2px solid var(--text3); flex-shrink: 0; }
+.demo-checkbox.checked { background: var(--blue); border-color: var(--blue); }
+
+/* Info/tip/warning boxes */
+.info-box {
+  border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 14px;
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.info-box.tip { background: rgba(34,211,238,0.08); border: 1px solid rgba(34,211,238,0.25); }
+.info-box.warn { background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.25); }
+.info-box.danger { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); }
+.info-box.success { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.25); }
+.info-icon { font-size: 20px; flex-shrink: 0; }
+.info-content { font-size: 13px; line-height: 1.6; }
+.info-content strong { display: block; margin-bottom: 4px; font-size: 13px; font-weight: 700; }
+.info-box.tip .info-content { color: #a5f3fc; }
+.info-box.warn .info-content { color: #fde68a; }
+.info-box.danger .info-content { color: #fca5a5; }
+.info-box.success .info-content { color: #bbf7d0; }
+
+/* Step navigation */
+.step-nav {
+  padding: 16px 20px; display: flex; gap: 10px;
+  background: var(--bg2); border-top: 1px solid var(--border);
+  position: sticky; bottom: 0;
+}
+.nav-btn {
+  flex: 1; padding: 14px; border-radius: var(--radius-sm); border: none;
+  font-family: 'Heebo', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer;
+  transition: all .2s;
+}
+.nav-btn.primary { background: var(--blue); color: white; }
+.nav-btn.primary:active { background: var(--blue2); transform: scale(0.98); }
+.nav-btn.secondary { background: rgba(255,255,255,0.06); color: var(--text2); border: 1px solid var(--border); }
+.nav-btn.secondary:active { background: rgba(255,255,255,0.12); }
+.nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* ===== QUIZ SCREEN ===== */
+#screen-quiz { background: var(--bg); }
+.quiz-header { padding: 20px; background: var(--bg2); border-bottom: 1px solid var(--border); }
+.quiz-progress-bar { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; margin-bottom: 14px; }
+.quiz-progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--cyan)); border-radius: 2px; transition: width .4s ease; }
+.quiz-q-label { font-size: 11px; color: var(--text3); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.quiz-question { font-size: 17px; font-weight: 700; line-height: 1.5; }
+
+.quiz-body { flex: 1; overflow-y: auto; padding: 20px; }
+.quiz-options { display: flex; flex-direction: column; gap: 10px; }
+.quiz-option {
+  background: var(--card); border: 2px solid var(--border); border-radius: var(--radius-sm);
+  padding: 16px; cursor: pointer; transition: all .2s;
+  display: flex; align-items: center; gap: 12px;
+  font-size: 14px; font-weight: 500; line-height: 1.4;
+}
+.quiz-option:active { transform: scale(0.98); }
+.quiz-option.selected { border-color: var(--blue); background: rgba(59,130,246,0.12); }
+.quiz-option.correct { border-color: var(--green); background: rgba(34,197,94,0.12); color: #bbf7d0; }
+.quiz-option.wrong { border-color: var(--red); background: rgba(239,68,68,0.08); color: #fca5a5; }
+.opt-circle {
+  width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--text3);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  font-size: 12px; font-weight: 700; color: var(--text3);
+}
+.quiz-option.selected .opt-circle { border-color: var(--blue); color: var(--blue); }
+.quiz-option.correct .opt-circle { border-color: var(--green); color: var(--green); background: rgba(34,197,94,0.2); }
+.quiz-option.wrong .opt-circle { border-color: var(--red); color: var(--red); }
+
+.quiz-feedback {
+  margin-top: 16px; border-radius: var(--radius-sm); padding: 14px 16px;
+  animation: fadeIn .25s ease; display: none;
+}
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct-fb { background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); }
+.quiz-feedback.wrong-fb { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.3); }
+.quiz-feedback .fb-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.quiz-feedback.correct-fb .fb-title { color: var(--green); }
+.quiz-feedback.wrong-fb .fb-title { color: var(--red); }
+.quiz-feedback p { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+.quiz-nav { padding: 16px 20px; background: var(--bg2); border-top: 1px solid var(--border); }
+
+/* ===== RESULTS SCREEN ===== */
+#screen-results {
+  background: radial-gradient(ellipse 100% 60% at 50% 0%, #0d3070 0%, var(--bg) 60%);
+  align-items: center; justify-content: center; padding: 40px 24px; text-align: center;
+}
+.result-icon { font-size: 72px; margin-bottom: 16px; }
+.result-score { font-size: 64px; font-weight: 800; color: var(--cyan); line-height: 1; margin-bottom: 4px; }
+.result-label { font-size: 16px; color: var(--text2); margin-bottom: 24px; }
+.result-message { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+.result-sub { font-size: 14px; color: var(--text2); margin-bottom: 32px; }
+.result-actions { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 280px; }
+.result-btn {
+  padding: 16px; border-radius: var(--radius-sm); font-family: 'Heebo', sans-serif;
+  font-size: 15px; font-weight: 700; cursor: pointer; transition: all .2s; border: none;
+}
+.result-btn.primary { background: var(--blue); color: white; }
+.result-btn.secondary { background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid var(--border); }
+
+/* ===== GLOSSARY SCREEN ===== */
+#screen-glossary { background: var(--bg); }
+.glossary-search {
+  padding: 14px 20px; background: var(--bg2); border-bottom: 1px solid var(--border);
+  display: flex; gap: 10px; align-items: center;
+}
+.glossary-search input {
+  flex: 1; background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 10px;
+  padding: 10px 14px; color: var(--text); font-family: 'Heebo', sans-serif; font-size: 14px;
+  outline: none; direction: inherit;
+}
+.glossary-search input:focus { border-color: var(--blue); }
+.glossary-search input::placeholder { color: var(--text3); }
+.glossary-list { padding: 12px 20px; overflow-y: auto; flex: 1; }
+.glossary-item {
+  border-bottom: 1px solid var(--border); padding: 14px 0;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.glossary-term { font-size: 15px; font-weight: 700; color: var(--text); }
+.glossary-term-en { font-size: 12px; color: var(--blue); font-family: 'JetBrains Mono', monospace; margin-bottom: 2px; }
+.glossary-def { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+/* ===== BOTTOM NAV ===== */
+.bottom-nav {
+  display: flex; background: var(--bg2); border-top: 1px solid var(--border);
+  padding: 8px 0 env(safe-area-inset-bottom, 8px);
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+}
+.nav-item {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 6px 0; cursor: pointer; transition: all .15s;
+  color: var(--text3); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.nav-item .nav-icon { font-size: 22px; }
+.nav-item.active { color: var(--cyan); }
+.nav-item:active { transform: scale(0.92); }
+
+/* Spacing for bottom nav */
+.has-bottom-nav { padding-bottom: 72px; }
+
+/* ===== VIDEO PLAYER MODAL ===== */
+.video-modal {
+  display: none; position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,0.92); align-items: center; justify-content: center;
+  padding: 20px; flex-direction: column;
+}
+.video-modal.open { display: flex; }
+.video-modal-close { position: absolute; top: 20px; right: 20px; font-size: 28px; cursor: pointer; color: white; z-index: 10; }
+.video-player-box {
+  width: 100%; max-width: 500px;
+  background: #0d1b38; border-radius: var(--radius); overflow: hidden;
+  border: 1px solid var(--border);
+}
+.video-player-header { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+.video-player-header h3 { font-size: 15px; font-weight: 700; }
+.video-animation-area {
+  aspect-ratio: 16/9; background: #000;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.vid-bg { position: absolute; inset: 0; background: linear-gradient(135deg, #0a1a40 0%, #05101e 100%); }
+.vid-content { position: relative; z-index: 2; text-align: center; width: 100%; padding: 20px; }
+.vid-steps { display: flex; flex-direction: column; gap: 10px; }
+.vid-step {
+  background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.25);
+  border-radius: 8px; padding: 10px 14px; text-align: right;
+  font-size: 13px; color: var(--text); opacity: 0;
+  transform: translateX(20px); transition: all .4s ease;
+}
+.vid-step.show { opacity: 1; transform: translateX(0); }
+.vid-step .vs-icon { margin-left: 8px; }
+.video-controls { padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
+.vid-progress { flex: 1; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
+.vid-progress-fill { height: 100%; background: var(--blue); width: 0%; transition: width .1s linear; }
+.vid-time { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text3); min-width: 40px; }
+.vid-play-btn {
+  width: 36px; height: 36px; border-radius: 50%; background: var(--blue); border: none;
+  color: white; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center;
+}
+
+/* RTL/LTR helpers */
+[dir="ltr"] .module-card::before { right: auto; left: 0; }
+[dir="ltr"] .back-btn { transform: scaleX(-1); }
+
+/* Scroll */
+::-webkit-scrollbar { width: 0; height: 0; }
+</style>
+</head>
+<body>
+
+<!-- LANGUAGE SELECTION SCREEN -->
+<div id="screen-lang" class="screen active">
+  <div class="lang-logo">⚙️</div>
+  <div class="lang-title">MES Training<br>Strauss Karmiel</div>
+  <div class="lang-subtitle">Siemens Opcenter EX PR</div>
+  <div class="lang-btns">
+    <button class="lang-btn" onclick="setLang('he')">
+      <span class="flag">🇮🇱</span>
+      <span>עברית</span>
+    </button>
+    <button class="lang-btn" onclick="setLang('en')">
+      <span class="flag">🇺🇸</span>
+      <span>English</span>
+    </button>
+  </div>
+</div>
+
+<!-- HOME SCREEN -->
+<div id="screen-home" class="screen">
+  <div class="app-header">
+    <div class="header-logo">MES <span>Learn</span></div>
+    <div class="header-right">
+      <button class="lang-toggle" onclick="toggleLang()">EN/HE</button>
+      <svg class="progress-ring" viewBox="0 0 36 36">
+        <circle class="track" cx="18" cy="18" r="15.5"/>
+        <circle class="fill" id="ring-fill" cx="18" cy="18" r="15.5" 
+          stroke-dasharray="97.4" stroke-dashoffset="97.4"
+          transform="rotate(-90 18 18)"/>
+      </svg>
+    </div>
+  </div>
+  <div class="has-bottom-nav" style="overflow-y:auto;flex:1;">
+    <div class="home-hero">
+      <div class="hero-welcome" id="hero-welcome">שלום, ברוך הבא</div>
+      <div class="hero-title" id="hero-title">מוכן להתחיל<br>ללמוד MES? <span>🚀</span></div>
+      <div class="progress-bar-container">
+        <div class="progress-label">
+          <span id="prog-label">התקדמות כוללת</span>
+          <span id="prog-pct">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-bar-fill" id="main-progress" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+    <div class="home-grid" id="home-grid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- LESSON SCREEN -->
+<div id="screen-lesson" class="screen">
+  <div class="lesson-header">
+    <button class="back-btn" onclick="goBack()">‹</button>
+    <div class="lesson-title-header">
+      <h2 id="lesson-title">שם מודול</h2>
+      <p id="lesson-subtitle">תיאור</p>
+    </div>
+    <div class="step-counter" id="step-counter">1/5</div>
+  </div>
+  <div class="step-dots" id="step-dots"></div>
+  <div class="step-content has-bottom-nav" id="step-content"></div>
+  <div class="step-nav">
+    <button class="nav-btn secondary" id="btn-prev" onclick="prevStep()" data-he="הקודם" data-en="Back">הקודם</button>
+    <button class="nav-btn primary" id="btn-next" onclick="nextStep()" data-he="הבא" data-en="Next">הבא</button>
+  </div>
+</div>
+
+<!-- QUIZ SCREEN -->
+<div id="screen-quiz" class="screen">
+  <div class="quiz-header">
+    <div class="quiz-progress-bar">
+      <div class="quiz-progress-fill" id="quiz-prog-fill"></div>
+    </div>
+    <div class="quiz-q-label" id="quiz-q-label">שאלה 1 מתוך 5</div>
+    <div class="quiz-question" id="quiz-question"></div>
+  </div>
+  <div class="quiz-body has-bottom-nav" style="overflow-y:auto;">
+    <div class="quiz-options" id="quiz-options"></div>
+    <div class="quiz-feedback" id="quiz-feedback">
+      <div class="fb-title" id="fb-title"></div>
+      <p id="fb-text"></p>
+    </div>
+  </div>
+  <div class="quiz-nav">
+    <button class="nav-btn primary" id="quiz-next-btn" onclick="quizNext()" style="display:none;" 
+      data-he="שאלה הבאה" data-en="Next Question">שאלה הבאה</button>
+  </div>
+</div>
+
+<!-- RESULTS SCREEN -->
+<div id="screen-results" class="screen">
+  <div class="result-icon" id="result-icon">🎉</div>
+  <div class="result-score" id="result-score">80%</div>
+  <div class="result-label" id="result-label">ציון</div>
+  <div class="result-message" id="result-message">כל הכבוד!</div>
+  <div class="result-sub" id="result-sub">השלמת את הבחינה בהצלחה</div>
+  <div class="result-actions">
+    <button class="result-btn primary" onclick="goHome()" id="btn-home-result" data-he="חזרה לדף הבית" data-en="Back to Home">חזרה לדף הבית</button>
+    <button class="result-btn secondary" onclick="retryQuiz()" id="btn-retry" data-he="נסה שוב" data-en="Try Again">נסה שוב</button>
+  </div>
+</div>
+
+<!-- GLOSSARY SCREEN -->
+<div id="screen-glossary" class="screen">
+  <div class="app-header">
+    <div class="header-logo" id="glos-title">מונחים</div>
+    <button class="lang-toggle" onclick="toggleLang()">EN/HE</button>
+  </div>
+  <div class="glossary-search">
+    <input type="text" id="glos-search" placeholder="חפש מונח..." oninput="filterGlossary(this.value)">
+  </div>
+  <div class="glossary-list has-bottom-nav" id="glos-list"></div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav" id="bottom-nav" style="display:none;">
+  <div class="nav-item active" id="nav-home" onclick="showHomeNav()">
+    <span class="nav-icon">🏠</span>
+    <span id="nav-label-home">בית</span>
+  </div>
+  <div class="nav-item" id="nav-learn" onclick="openQuickQuiz()">
+    <span class="nav-icon">✏️</span>
+    <span id="nav-label-quiz">בחינה</span>
+  </div>
+  <div class="nav-item" id="nav-glos" onclick="showGlossary()">
+    <span class="nav-icon">📖</span>
+    <span id="nav-label-glos">מונחים</span>
+  </div>
+  <div class="nav-item" id="nav-progress" onclick="showProgressScreen()">
+    <span class="nav-icon">📊</span>
+    <span id="nav-label-prog">התקדמות</span>
+  </div>
+</nav>
+
+<!-- VIDEO MODAL -->
+<div class="video-modal" id="video-modal">
+  <div class="video-modal-close" onclick="closeVideo()">✕</div>
+  <div class="video-player-box">
+    <div class="video-player-header">
+      <span id="vid-icon">🎬</span>
+      <h3 id="vid-modal-title">כותרת הסרטון</h3>
+    </div>
+    <div class="video-animation-area">
+      <div class="vid-bg"></div>
+      <div class="vid-content">
+        <div class="vid-steps" id="vid-steps-container"></div>
+      </div>
+    </div>
+    <div class="video-controls">
+      <button class="vid-play-btn" id="vid-play-btn" onclick="toggleVideoPlay()">▶</button>
+      <div class="vid-progress"><div class="vid-progress-fill" id="vid-prog"></div></div>
+      <div class="vid-time" id="vid-time">0:00</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===================== STATE =====================
+let lang = 'he';
+let currentModule = null;
+let currentStep = 0;
+let currentQuiz = null;
+let currentQuizQ = 0;
+let quizAnswered = false;
+let quizScore = 0;
+let progress = {};
+let videoPlaying = false;
+let videoTimer = null;
+let videoProgress = 0;
+let videoSteps = [];
+let videoStepIdx = 0;
+
+// ===================== TRANSLATIONS =====================
+const T = {
+  he: {
+    welcome: 'שלום, ברוך הבא 👋',
+    heroTitle: 'מוכן להתחיל<br>ללמוד MES? <span>🚀</span>',
+    overallProgress: 'התקדמות כוללת',
+    modules: 'מודולי למידה',
+    quickActions: 'פעולות מהירות',
+    quickQuiz: 'בחן את עצמך',
+    quickGloss: 'מילון מונחים',
+    quickProgress: 'ההתקדמות שלי',
+    quickHelp: 'עזרה מהירה',
+    prev: 'הקודם',
+    next: 'הבא',
+    complete: 'סיים מודול',
+    backHome: 'חזרה לבית',
+    navHome: 'בית',
+    navQuiz: 'בחינה',
+    navGlos: 'מונחים',
+    navProg: 'התקדמות',
+    glossTitle: 'מונחים',
+    glossSearch: 'חפש מונח...',
+    question: 'שאלה',
+    of: 'מתוך',
+    nextQ: 'שאלה הבאה',
+    finishQuiz: 'סיים בחינה',
+    correct: '✅ נכון!',
+    wrong: '❌ לא נכון',
+    score: 'ציון',
+    great: '🎉 כל הכבוד!',
+    pass: 'עברת את הבחינה בהצלחה',
+    fail: 'נסה שוב — תוכל לעשות זאת טוב יותר!',
+    retry: 'נסה שוב',
+    homeResult: 'חזרה לדף הבית',
+    done: 'הושלם',
+    inProgress: 'בתהליך',
+    notStarted: 'חדש',
+    min: 'דקות',
+    steps: 'שלבים',
+    startLesson: 'התחל שיעור',
+    continueLesson: 'המשך',
+    takeQuiz: 'לבחינה',
+    videoHint: 'לחץ להפעלת סרטון הדגמה',
+  },
+  en: {
+    welcome: 'Welcome! 👋',
+    heroTitle: 'Ready to learn<br>MES? <span>🚀</span>',
+    overallProgress: 'Overall Progress',
+    modules: 'Learning Modules',
+    quickActions: 'Quick Actions',
+    quickQuiz: 'Test Yourself',
+    quickGloss: 'Glossary',
+    quickProgress: 'My Progress',
+    quickHelp: 'Quick Help',
+    prev: 'Back',
+    next: 'Next',
+    complete: 'Complete Module',
+    backHome: 'Back to Home',
+    navHome: 'Home',
+    navQuiz: 'Quiz',
+    navGlos: 'Glossary',
+    navProg: 'Progress',
+    glossTitle: 'Glossary',
+    glossSearch: 'Search term...',
+    question: 'Question',
+    of: 'of',
+    nextQ: 'Next Question',
+    finishQuiz: 'Finish Quiz',
+    correct: '✅ Correct!',
+    wrong: '❌ Incorrect',
+    score: 'Score',
+    great: '🎉 Well done!',
+    pass: 'You passed the quiz!',
+    fail: 'Try again — you can do better!',
+    retry: 'Try Again',
+    homeResult: 'Back to Home',
+    done: 'Done',
+    inProgress: 'In Progress',
+    notStarted: 'New',
+    min: 'min',
+    steps: 'steps',
+    startLesson: 'Start Lesson',
+    continueLesson: 'Continue',
+    takeQuiz: 'Take Quiz',
+    videoHint: 'Tap to play demo video',
+  }
+};
+function t(key) { return T[lang][key] || key; }
+
+// ===================== CONTENT DATA =====================
+const modules = [
+  {
+    id: 'intro',
+    icon: '🏭',
+    iconBg: 'rgba(59,130,246,0.15)',
+    accent: '#3b82f6',
+    titleHe: 'מבוא למערכת MES',
+    titleEn: 'Introduction to MES',
+    subtitleHe: 'מהו MES וכיצד הוא עובד',
+    subtitleEn: 'What is MES and how it works',
+    duration: 10,
+    steps: [
+      {
+        titleHe: 'מהו MES?',
+        titleEn: 'What is MES?',
+        bodyHe: `<p>מערכת MES (Manufacturing Execution System) היא מערכת לניהול ריצפת הייצור בזמן אמת. המערכת מחברת בין ה-SAP (ERP) לבין הייצור בפועל.</p>
+        <div class="info-box tip"><div class="info-icon">💡</div><div class="info-content"><strong>למה MES?</strong>מאפשרת מעקב מלא אחר חומרי גלם, ייצור ואיכות — מרגע הכנסת החומר ועד המוצר הסופי.</div></div>
+        <div class="video-sim" onclick="playVideo('intro1')">
+          <div class="vs-screen">
+            <div class="vs-play">▶</div>
+            <div class="vs-title">מהו MES? — סרטון מבוא</div>
+            <div class="vs-duration">2:30</div>
+            <div class="vs-corner">HD</div>
+          </div>
+        </div>`,
+        bodyEn: `<p>MES (Manufacturing Execution System) manages the production floor in real time. It connects SAP (ERP) to actual production operations.</p>
+        <div class="info-box tip"><div class="info-icon">💡</div><div class="info-content"><strong>Why MES?</strong>Provides full traceability of raw materials, production and quality — from material receipt to finished product.</div></div>
+        <div class="video-sim" onclick="playVideo('intro1')">
+          <div class="vs-screen">
+            <div class="vs-play">▶</div>
+            <div class="vs-title">What is MES? — Intro Video</div>
+            <div class="vs-duration">2:30</div>
+            <div class="vs-corner">HD</div>
+          </div>
+        </div>`,
+        videoId: 'intro1'
+      },
+      {
+        titleHe: 'יישויות הנדסיות',
+        titleEn: 'Engineering Entities',
+        bodyHe: `<p>המערכת מורכבת משני סוגי ישויות:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#ef4444"></div><div class="demo-dot" style="background:#fbbf24"></div><div class="demo-dot" style="background:#22c55e"></div><span>Engineering Entities</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row"><span>🏭</span><span>Equipment — ציוד, קווי ייצור, מכונות</span></div>
+            <div class="demo-row"><span>📦</span><span>Material — חומרי גלם, מוצרים</span></div>
+            <div class="demo-row"><span>📋</span><span>Process Definition — תהליכי ייצור</span></div>
+            <div class="demo-row"><span>✅</span><span>Task Definition — משימות וצ׳קליסטים</span></div>
+          </div>
+        </div>
+        <p>ישויות <strong>Runtime</strong> נוצרות בזמן הייצור: הזמנות, פק"עות, MTU.</p>`,
+        bodyEn: `<p>The system has two types of entities:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#ef4444"></div><div class="demo-dot" style="background:#fbbf24"></div><div class="demo-dot" style="background:#22c55e"></div><span>Engineering Entities</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row"><span>🏭</span><span>Equipment — production lines, machines</span></div>
+            <div class="demo-row"><span>📦</span><span>Material — raw materials, products</span></div>
+            <div class="demo-row"><span>📋</span><span>Process Definition — production workflows</span></div>
+            <div class="demo-row"><span>✅</span><span>Task Definition — tasks and checklists</span></div>
+          </div>
+        </div>
+        <p><strong>Runtime</strong> entities are created during production: Orders, Work Orders, MTUs.</p>`,
+      },
+      {
+        titleHe: 'הזמנה ופקודת עבודה',
+        titleEn: 'Order & Work Order',
+        bodyHe: `<p>ה-<strong>Order (הזמנה)</strong> מגיעה מ-SAP ומכילה: מה לייצר, כמה, באיזה קו ואיזה חומרים נדרשים.</p>
+        <p>ה-<strong>Work Order (פק"ע)</strong> קיים רק ב-MES — מייצג את ביצוע הייצור בפועל על מכונה מסוימת.</p>
+        <div class="info-box tip"><div class="info-icon">🔗</div><div class="info-content"><strong>הקשר:</strong>בקרמיאל — יחס 1:1 בין Order לWork Order בייצור ראשוני. הWO נפתח אוטומטית כשמתחילים הזמנה.</div></div>
+        <div class="video-sim" onclick="playVideo('order1')">
+          <div class="vs-screen">
+            <div class="vs-play">▶</div>
+            <div class="vs-title">הזמנה → פקודת עבודה</div>
+            <div class="vs-duration">1:45</div>
+            <div class="vs-corner">HD</div>
+          </div>
+        </div>`,
+        bodyEn: `<p>The <strong>Order</strong> arrives from SAP with: what to produce, quantity, production line and required materials.</p>
+        <p>The <strong>Work Order (WO)</strong> exists only in MES — represents actual production execution on a specific machine.</p>
+        <div class="info-box tip"><div class="info-icon">🔗</div><div class="info-content"><strong>Relationship:</strong>In Karmiel — 1:1 between Order and Work Order for primary production. WO is created automatically when an order starts.</div></div>
+        <div class="video-sim" onclick="playVideo('order1')">
+          <div class="vs-screen">
+            <div class="vs-play">▶</div>
+            <div class="vs-title">Order → Work Order</div>
+            <div class="vs-duration">1:45</div>
+            <div class="vs-corner">HD</div>
+          </div>
+        </div>`,
+      },
+      {
+        titleHe: 'MTU — יחידת מטען',
+        titleEn: 'MTU — Material Tracking Unit',
+        bodyHe: `<p>ה-MTU הוא הרכיב המרכזי לניהול וצריכת חומרים. קיימים 4 סוגים:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#3b82f6"></div><span>MTU Types</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row highlight"><span>📦</span><span>HU — חומר גלם מהמחסן (HU מ-SAP)</span></div>
+            <div class="demo-row"><span>🗂️</span><span>LOT — מנת חו"ג המנוהלת במחסן</span></div>
+            <div class="demo-row"><span>🔀</span><span>SEMI — משטח עם כמות חלקית של תוצ"ג</span></div>
+            <div class="demo-row action"><span>✅</span><span>FG — מוצר מוגמר</span></div>
+          </div>
+        </div>
+        <div class="info-box warn"><div class="info-icon">⚠️</div><div class="info-content"><strong>חשוב!</strong>לפני שסורקים MTU — המערכת מבצעת בדיקה מול SAP: האם החומר תקף? האם לא פג תוקפו?</div></div>`,
+        bodyEn: `<p>The MTU is the core component for managing and consuming materials. There are 4 types:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#3b82f6"></div><span>MTU Types</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row highlight"><span>📦</span><span>HU — Raw material from warehouse (SAP HU)</span></div>
+            <div class="demo-row"><span>🗂️</span><span>LOT — Material batch managed in warehouse</span></div>
+            <div class="demo-row"><span>🔀</span><span>SEMI — Pallet with partial finished goods</span></div>
+            <div class="demo-row action"><span>✅</span><span>FG — Finished goods</span></div>
+          </div>
+        </div>
+        <div class="info-box warn"><div class="info-icon">⚠️</div><div class="info-content"><strong>Important!</strong>Before consuming an MTU — the system verifies with SAP: Is the material valid? Has it expired?</div></div>`,
+      }
+    ],
+    quiz: 'intro'
+  },
+  {
+    id: 'operator',
+    icon: '👷',
+    iconBg: 'rgba(34,197,94,0.15)',
+    accent: '#22c55e',
+    titleHe: 'תהליך עבודת המפעיל',
+    titleEn: 'Operator Daily Workflow',
+    subtitleHe: 'כניסה, פק"ע, משימות וצריכה',
+    subtitleEn: 'Login, WO, tasks and consumption',
+    duration: 15,
+    steps: [
+      {
+        titleHe: 'שלב 1: כניסה למערכת',
+        titleEn: 'Step 1: Log In',
+        bodyHe: `<p>בעת הגעה למשמרת, פתחו את דפדפן המערכת:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#22c55e"></div><span>Login Screen</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row highlight"><span>⚙️</span><span>לחץ על גלגל השיניים בפינה</span></div>
+            <div class="demo-row action"><span>🔑</span><span>בחר "Use your current Windows session"</span></div>
+          </div>
+        </div>
+        <div class="info-box success"><div class="info-icon">✅</div><div class="info-content"><strong>כניסה אוטומטית</strong>המערכת תיכנס באופן אוטומטי עם פרטי Windows שלך — אין צורך בסיסמא נוספת.</div></div>`,
+        bodyEn: `<p>Upon arriving for your shift, open the system browser:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#22c55e"></div><span>Login Screen</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row highlight"><span>⚙️</span><span>Click the gear icon in the corner</span></div>
+            <div class="demo-row action"><span>🔑</span><span>Select "Use your current Windows session"</span></div>
+          </div>
+        </div>
+        <div class="info-box success"><div class="info-icon">✅</div><div class="info-content"><strong>Automatic Login</strong>The system logs in automatically with your Windows credentials — no additional password needed.</div></div>`,
+      },
+      {
+        titleHe: 'שלב 2: הגדרת ציוד',
+        titleEn: 'Step 2: Set Your Equipment',
+        bodyHe: `<p>לאחר הכניסה, הגדירו איפה אתם עובדים — ב-<strong>Production Set-Up</strong>:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#fbbf24"></div><span>Production Set-Up</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row"><span>🏭</span><span>בחר: האם ייצור או אריזה?</span></div>
+            <div class="demo-row highlight"><span>⚙️</span><span>בחר את הקו/מכונה שלך מהרשימה</span></div>
+            <div class="demo-row action"><span>💾</span><span>לחץ שמור</span></div>
+          </div>
+        </div>
+        <div class="video-sim" onclick="playVideo('setup1')">
+          <div class="vs-screen">
+            <div class="vs-play">▶</div>
+            <div class="vs-title">הגדרת ציוד — Production Set-Up</div>
+            <div class="vs-duration">1:20</div>
+          </div>
+        </div>`,
+        bodyEn: `<p>After login, tell the system where you're working — in <strong>Production Set-Up</strong>:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#fbbf24"></div><span>Production Set-Up</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row"><span>🏭</span><span>Select: Production or Packaging?</span></div>
+            <div class="demo-row highlight"><span>⚙️</span><span>Choose your line/machine from the list</span></div>
+            <div class="demo-row action"><span>💾</span><span>Click Save</span></div>
+          </div>
+        </div>
+        <div class="video-sim" onclick="playVideo('setup1')">
+          <div class="vs-screen">
+            <div class="vs-play">▶</div>
+            <div class="vs-title">Equipment Setup — Production Set-Up</div>
+            <div class="vs-duration">1:20</div>
+          </div>
+        </div>`,
+      },
+      {
+        titleHe: 'שלב 3: מסך פקודות העבודה',
+        titleEn: 'Step 3: Work Orders Screen',
+        bodyHe: `<p>כניסה למסך <strong>Work Orders (פק"עות)</strong> — כאן תמצאו את כל הפקודות:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#3b82f6"></div><span>Work Orders Screen</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row"><span>🔍</span><span>לחץ "Group By" = שם מוצר</span></div>
+            <div class="demo-row highlight"><div class="demo-checkbox checked"></div><span>סמן ✓ ליד הפק"ע שלך</span></div>
+            <div class="demo-row"><span>✏️</span><span>לחץ עיפרון → הגדר ציוד</span></div>
+          </div>
+        </div>
+        <div class="info-box warn"><div class="info-icon">⚠️</div><div class="info-content"><strong>שגיאה נפוצה:</strong>אם תנסה לשייך פק"ע למכונה שכבר עובדת — תקבל הודעת שגיאה. בדוק קודם מה רץ על המכונה!</div></div>`,
+        bodyEn: `<p>Enter the <strong>Work Orders</strong> screen — here you find all work orders:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#3b82f6"></div><span>Work Orders Screen</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row"><span>🔍</span><span>Click "Group By" = Material Name</span></div>
+            <div class="demo-row highlight"><div class="demo-checkbox checked"></div><span>Check ✓ next to your WO</span></div>
+            <div class="demo-row"><span>✏️</span><span>Click pencil → assign equipment</span></div>
+          </div>
+        </div>
+        <div class="info-box warn"><div class="info-icon">⚠️</div><div class="info-content"><strong>Common Error:</strong>If you try to assign a WO to a machine already running — you'll get an error. Check first what's running on the machine!</div></div>`,
+      },
+      {
+        titleHe: 'שלב 4: הפעלת פקודת עבודה',
+        titleEn: 'Step 4: Start Work Order',
+        bodyHe: `<p>לאחר שיוך הפק"ע לציוד, יש לשנות סטטוס:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#22c55e"></div><span>Status Change</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row highlight"><div class="demo-checkbox checked"></div><span>סמן את הפק"ע</span></div>
+            <div class="demo-row"><span>🔄</span><span>לחץ אייקון "שינוי סטטוס"</span></div>
+            <div class="demo-row action"><span>▶</span><span>שנה: CREATED → STARTED → שמור</span></div>
+          </div>
+        </div>
+        <div class="video-sim" onclick="playVideo('start_wo')">
+          <div class="vs-screen">
+            <div class="vs-play">▶</div>
+            <div class="vs-title">הפעלת פקודת עבודה</div>
+            <div class="vs-duration">1:10</div>
+          </div>
+        </div>
+        <div class="info-box tip"><div class="info-icon">💡</div><div class="info-content">בסיום היום יש לשנות לסטטוס <strong>COMPLETED</strong> — זה שולח דיווח אוטומטי ל-SAP!</div></div>`,
+        bodyEn: `<p>After assigning the WO to equipment, change the status:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#22c55e"></div><span>Status Change</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row highlight"><div class="demo-checkbox checked"></div><span>Select the WO</span></div>
+            <div class="demo-row"><span>🔄</span><span>Click "Change Status" icon</span></div>
+            <div class="demo-row action"><span>▶</span><span>Change: CREATED → STARTED → Save</span></div>
+          </div>
+        </div>
+        <div class="video-sim" onclick="playVideo('start_wo')">
+          <div class="vs-screen">
+            <div class="vs-play">▶</div>
+            <div class="vs-title">Starting a Work Order</div>
+            <div class="vs-duration">1:10</div>
+          </div>
+        </div>
+        <div class="info-box tip"><div class="info-icon">💡</div><div class="info-content">At end of day, change to <strong>COMPLETED</strong> — this sends automatic report to SAP!</div></div>`,
+      },
+      {
+        titleHe: 'שלב 5: רשימת משימות המפעיל',
+        titleEn: 'Step 5: Operator Task List',
+        bodyHe: `<p>ב-<strong>Operator Task List</strong> מופיעות כל המשימות שיש לבצע:</p>
+        <ul>
+          <li>משימות צ'קליסט — מילוי טפסים</li>
+          <li>משימות צריכה — ניפוק חומרים</li>
+          <li>משימות איכות — בדיקות</li>
+          <li>משימות תחזוקה — קריאות</li>
+        </ul>
+        <div class="info-box tip"><div class="info-icon">▶</div><div class="info-content">לחץ כפתור <strong>Play</strong> כדי לפתוח ולבצע משימה.</div></div>
+        <div class="info-box warn"><div class="info-icon">❓</div><div class="info-content"><strong>WO עבר ל-PAUSED?</strong>זה תקין! המערכת משהה בין משימות. פשוט עבור למשימה הבאה ולחץ Play.</div></div>`,
+        bodyEn: `<p>The <strong>Operator Task List</strong> shows all tasks to complete:</p>
+        <ul>
+          <li>Checklist tasks — filling out forms</li>
+          <li>Consumption tasks — issuing materials</li>
+          <li>Quality tasks — inspections</li>
+          <li>Maintenance tasks — requests</li>
+        </ul>
+        <div class="info-box tip"><div class="info-icon">▶</div><div class="info-content">Press the <strong>Play</strong> button to open and perform a task.</div></div>
+        <div class="info-box warn"><div class="info-icon">❓</div><div class="info-content"><strong>WO changed to PAUSED?</strong>This is normal! The system pauses between tasks. Just go to the next task and press Play.</div></div>`,
+      }
+    ],
+    quiz: 'operator'
+  },
+  {
+    id: 'consumption',
+    icon: '📦',
+    iconBg: 'rgba(251,191,36,0.15)',
+    accent: '#fbbf24',
+    titleHe: 'משימת צריכת חומרים',
+    titleEn: 'Material Consumption Task',
+    subtitleHe: 'סריקת MTU, כמות וביטול',
+    subtitleEn: 'MTU scanning, quantity and cancellation',
+    duration: 12,
+    steps: [
+      {
+        titleHe: 'כניסה למשימת צריכה',
+        titleEn: 'Enter Consumption Task',
+        bodyHe: `<p>משימת הצריכה מופיעה ב-Task List. לחצו Play כדי לפתוח:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#fbbf24"></div><span>Consumption Task</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row"><span>📋</span><span>מספר הזמנה, מוצר, כמות</span></div>
+            <div class="demo-row highlight"><span>📷</span><span>שדה MTU — לסריקת ברקוד</span></div>
+            <div class="demo-row"><span>⚖️</span><span>כמות ויחידת מידה</span></div>
+          </div>
+        </div>
+        <div class="info-box tip"><div class="info-icon">💡</div><div class="info-content"><strong>חומרי BF (Backflush)</strong>לא יופיעו ברשימה — הם נצרכים אוטומטית! רק חומרים שאינם BF יופיעו למניפוק ידני.</div></div>`,
+        bodyEn: `<p>The consumption task appears in the Task List. Press Play to open:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#fbbf24"></div><span>Consumption Task</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row"><span>📋</span><span>Order number, product, quantity</span></div>
+            <div class="demo-row highlight"><span>📷</span><span>MTU field — for barcode scanning</span></div>
+            <div class="demo-row"><span>⚖️</span><span>Quantity and unit of measure</span></div>
+          </div>
+        </div>
+        <div class="info-box tip"><div class="info-icon">💡</div><div class="info-content"><strong>BF (Backflush) materials</strong>won't appear in the list — they are consumed automatically! Only non-BF materials require manual issuing.</div></div>`,
+      },
+      {
+        titleHe: 'סריקת ברקוד MTU',
+        titleEn: 'Scanning MTU Barcode',
+        bodyHe: `<p>ישנן שתי דרכים לבחור MTU:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#22d3ee"></div><span>MTU Selection</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row highlight"><span>📷</span><span>אפשרות 1: סריקת ברקוד על המשטח/מיכל</span></div>
+            <div class="demo-row"><span>🔍</span><span>אפשרות 2: לחץ "..." ← חפש מתוך רשימה</span></div>
+            <div class="demo-row action"><span>✅</span><span>המערכת מאמתת אוטומטית מול SAP</span></div>
+          </div>
+        </div>
+        <div class="video-sim" onclick="playVideo('scan_mtu')">
+          <div class="vs-screen">
+            <div class="vs-play">▶</div>
+            <div class="vs-title">סריקת MTU — הדגמה</div>
+            <div class="vs-duration">1:30</div>
+          </div>
+        </div>`,
+        bodyEn: `<p>There are two ways to select an MTU:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#22d3ee"></div><span>MTU Selection</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row highlight"><span>📷</span><span>Option 1: Scan barcode on pallet/container</span></div>
+            <div class="demo-row"><span>🔍</span><span>Option 2: Click "..." ← search from list</span></div>
+            <div class="demo-row action"><span>✅</span><span>System validates automatically against SAP</span></div>
+          </div>
+        </div>
+        <div class="video-sim" onclick="playVideo('scan_mtu')">
+          <div class="vs-screen">
+            <div class="vs-play">▶</div>
+            <div class="vs-title">Scanning MTU — Demo</div>
+            <div class="vs-duration">1:30</div>
+          </div>
+        </div>`,
+      },
+      {
+        titleHe: 'הגדרת כמות ושמירה',
+        titleEn: 'Set Quantity and Save',
+        bodyHe: `<p>לאחר בחירת ה-MTU:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#22c55e"></div><span>Quantity</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row highlight"><span>📊</span><span>לחץ "Consume All" — לצריכת כל הכמות</span></div>
+            <div class="demo-row"><span>🔢</span><span>או הזן כמות חלקית בשדה</span></div>
+            <div class="demo-row action"><span>💾</span><span>לחץ שמור</span></div>
+          </div>
+        </div>
+        <div class="info-box danger"><div class="info-icon">🚫</div><div class="info-content"><strong>אם הוצג אזהרת תפוגה!</strong>עצור! אל תמשיך לצרוך. דווח מיד ל-Super User או למנהל משמרת. זהו חומר שעשוי להיות בעייתי!</div></div>`,
+        bodyEn: `<p>After selecting the MTU:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#22c55e"></div><span>Quantity</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row highlight"><span>📊</span><span>Click "Consume All" — to consume full quantity</span></div>
+            <div class="demo-row"><span>🔢</span><span>Or enter partial quantity in the field</span></div>
+            <div class="demo-row action"><span>💾</span><span>Click Save</span></div>
+          </div>
+        </div>
+        <div class="info-box danger"><div class="info-icon">🚫</div><div class="info-content"><strong>If expiry warning appears!</strong>STOP! Do not proceed. Report immediately to Super User or Shift Manager. This may be a problematic material!</div></div>`,
+      },
+      {
+        titleHe: 'ביטול צריכה בטעות',
+        titleEn: 'Cancel Wrong Consumption',
+        bodyHe: `<p>סרקתם MTU בטעות? ניתן לבטל:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#ef4444"></div><span>Cancel Consumption</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row"><span>📦</span><span>לחץ על המילה "Material" ברשימה</span></div>
+            <div class="demo-row highlight"><span>➖</span><span>לחץ כפתור מינוס (–) ליד הרשומה</span></div>
+            <div class="demo-row action"><span>✅</span><span>הצריכה בוטלה — סרוק את הנכון</span></div>
+          </div>
+        </div>
+        <div class="info-box success"><div class="info-icon">✅</div><div class="info-content">ניתן לבטל צריכה באותו שלב, <strong>לפני שמירה</strong>. לאחר שמירה — פנה ל-Super User.</div></div>`,
+        bodyEn: `<p>Scanned the wrong MTU? You can cancel it:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#ef4444"></div><span>Cancel Consumption</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row"><span>📦</span><span>Click on the word "Material" in the list</span></div>
+            <div class="demo-row highlight"><span>➖</span><span>Click the minus (–) button next to the record</span></div>
+            <div class="demo-row action"><span>✅</span><span>Consumption cancelled — scan the correct one</span></div>
+          </div>
+        </div>
+        <div class="info-box success"><div class="info-icon">✅</div><div class="info-content">You can cancel consumption in the same step, <strong>before saving</strong>. After saving — contact Super User.</div></div>`,
+      }
+    ],
+    quiz: 'consumption'
+  },
+  {
+    id: 'quality',
+    icon: '🔬',
+    iconBg: 'rgba(168,85,247,0.15)',
+    accent: '#a855f7',
+    titleHe: 'ניהול איכות',
+    titleEn: 'Quality Management',
+    subtitleHe: 'בדיקות, תוצאות וסטאפ',
+    subtitleEn: 'Inspections, results and SETUP',
+    duration: 10,
+    steps: [
+      {
+        titleHe: 'מסך האיכות הראשי',
+        titleEn: 'Quality Main Screen',
+        bodyHe: `<p>כל בדיקות האיכות מגיעות מ-SAP כ-<strong>Inspection Lots</strong>. ניתן לסנן לפי:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#a855f7"></div><span>Quality Main</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row"><span>🏭</span><span>מרכז עבודה — הקו שלי</span></div>
+            <div class="demo-row highlight"><span>📋</span><span>פקודת עבודה — הפק"ע הנוכחית</span></div>
+            <div class="demo-row"><span>🔎</span><span>סוג בדיקה — שעתית/דו-שעתית</span></div>
+          </div>
+        </div>`,
+        bodyEn: `<p>All quality checks arrive from SAP as <strong>Inspection Lots</strong>. You can filter by:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#a855f7"></div><span>Quality Main</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row"><span>🏭</span><span>Work Center — my line</span></div>
+            <div class="demo-row highlight"><span>📋</span><span>Work Order — current WO</span></div>
+            <div class="demo-row"><span>🔎</span><span>Check type — hourly/bi-hourly</span></div>
+          </div>
+        </div>`,
+      },
+      {
+        titleHe: 'ביצוע בדיקת איכות',
+        titleEn: 'Performing Quality Check',
+        bodyHe: `<p>לביצוע הזנת תוצאות בדיקה:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#a855f7"></div><span>Quality Results</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row highlight"><span>📊</span><span>בחר שלב בדיקה → לחץ "הזן תוצאות"</span></div>
+            <div class="demo-row"><span>🔢</span><span>הזן ערכים מספריים / בחר מרשימה</span></div>
+            <div class="demo-row"><span>🆔</span><span>הזן מספר עובד → השם מתמלא אוטומטית</span></div>
+            <div class="demo-row action"><span>📤</span><span>לחץ "שלח" — הנתונים נשלחים ל-SAP</span></div>
+          </div>
+        </div>
+        <div class="info-box danger"><div class="info-icon">🚨</div><div class="info-content"><strong>תוצאה חורגת!</strong>אם תוצאה חורגת מהגבולות — המערכת תשלח התראה אוטומטית. עדכן מיד את מנהל המשמרת!</div></div>`,
+        bodyEn: `<p>To enter quality check results:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#a855f7"></div><span>Quality Results</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row highlight"><span>📊</span><span>Select check step → click "Enter Results"</span></div>
+            <div class="demo-row"><span>🔢</span><span>Enter numerical values / select from list</span></div>
+            <div class="demo-row"><span>🆔</span><span>Enter employee number → name fills automatically</span></div>
+            <div class="demo-row action"><span>📤</span><span>Click "Send" — data is sent to SAP</span></div>
+          </div>
+        </div>
+        <div class="info-box danger"><div class="info-icon">🚨</div><div class="info-content"><strong>Out-of-spec result!</strong>If a result exceeds limits — system sends an automatic alert. Update Shift Manager immediately!</div></div>`,
+      },
+      {
+        titleHe: 'SETUP — אישור הגדרה',
+        titleEn: 'SETUP — Approval Process',
+        bodyHe: `<p>בתחילת כל הזמנה נדרש תהליך <strong>SETUP</strong>:</p>
+        <ul>
+          <li>המפעיל מבצע בדיקת הגדרה ומאשר</li>
+          <li>מנהל משמרת חותם חתימה אלקטרונית</li>
+          <li>מוודא נוסף חותם חתימה אלקטרונית</li>
+        </ul>
+        <div class="info-box warn"><div class="info-icon">🔒</div><div class="info-content"><strong>חשוב!</strong>ייצור לא יכול להתחיל לפני שה-SETUP אושר ע"י כל הגורמים הנדרשים!</div></div>
+        <div class="video-sim" onclick="playVideo('setup_qual')">
+          <div class="vs-screen">
+            <div class="vs-play">▶</div>
+            <div class="vs-title">תהליך SETUP ואישור</div>
+            <div class="vs-duration">2:00</div>
+          </div>
+        </div>`,
+        bodyEn: `<p>At the start of each order, a <strong>SETUP</strong> process is required:</p>
+        <ul>
+          <li>Operator performs setup check and confirms</li>
+          <li>Shift Manager signs electronically</li>
+          <li>Additional verifier signs electronically</li>
+        </ul>
+        <div class="info-box warn"><div class="info-icon">🔒</div><div class="info-content"><strong>Important!</strong>Production cannot start until SETUP is approved by all required parties!</div></div>
+        <div class="video-sim" onclick="playVideo('setup_qual')">
+          <div class="vs-screen">
+            <div class="vs-play">▶</div>
+            <div class="vs-title">SETUP Process and Approval</div>
+            <div class="vs-duration">2:00</div>
+          </div>
+        </div>`,
+      }
+    ],
+    quiz: 'quality'
+  },
+  {
+    id: 'downtime',
+    icon: '⏱️',
+    iconBg: 'rgba(239,68,68,0.15)',
+    accent: '#ef4444',
+    titleHe: 'ניהול עצירות OEE',
+    titleEn: 'Downtime & OEE Management',
+    subtitleHe: 'מסך עצירות, סיווג וניתוח',
+    subtitleEn: 'Stoppages screen, classification and analysis',
+    duration: 8,
+    steps: [
+      {
+        titleHe: 'מסך עצירות',
+        titleEn: 'Stoppages Screen',
+        bodyHe: `<p>ניתן לגשת למסך העצירות דרך <strong>Operational Dashboards</strong>:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#ef4444"></div><span>Operational Dashboards</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row"><span>🏭</span><span>NEGEV-01 = מכונות ייצור</span></div>
+            <div class="demo-row"><span>📦</span><span>NEGEV-02 = מכונות אריזה</span></div>
+            <div class="demo-row highlight" style="border-color:var(--green)"><span>🟢</span><span>ירוק = עבודה תקינה</span></div>
+            <div class="demo-row" style="border-color:#3b82f6"><span>🔵</span><span>כחול = עצירה מתוכננת</span></div>
+            <div class="demo-row" style="border-color:var(--red)"><span>🔴</span><span>אדום = תקלה</span></div>
+            <div class="demo-row" style="border-color:#888"><span>⬜</span><span>אפור = לא מסווג — דורש פעולה!</span></div>
+          </div>
+        </div>`,
+        bodyEn: `<p>Access the stoppages screen via <strong>Operational Dashboards</strong>:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#ef4444"></div><span>Operational Dashboards</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row"><span>🏭</span><span>NEGEV-01 = Production machines</span></div>
+            <div class="demo-row"><span>📦</span><span>NEGEV-02 = Packaging machines</span></div>
+            <div class="demo-row highlight" style="border-color:var(--green)"><span>🟢</span><span>Green = Working normally</span></div>
+            <div class="demo-row" style="border-color:#3b82f6"><span>🔵</span><span>Blue = Planned stoppage</span></div>
+            <div class="demo-row" style="border-color:var(--red)"><span>🔴</span><span>Red = Fault</span></div>
+            <div class="demo-row" style="border-color:#888"><span>⬜</span><span>Gray = Unclassified — requires action!</span></div>
+          </div>
+        </div>`,
+      },
+      {
+        titleHe: 'סיווג עצירה',
+        titleEn: 'Classifying a Stoppage',
+        bodyHe: `<p>4 קבוצות סיווג לעצירות:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#fbbf24"></div><span>Reason Groups</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row"><span>⏳</span><span>Waiting — המתנה לחומר, מפעיל, תהליך</span></div>
+            <div class="demo-row"><span>📅</span><span>Planned DownTime — CIP, החלפת מוצר</span></div>
+            <div class="demo-row"><span>📝</span><span>Administrative Time — החלפת משמרת</span></div>
+            <div class="demo-row highlight"><span>🔧</span><span>Fault — תקלה טכנית → דורש מיקום + קוד תקלה</span></div>
+          </div>
+        </div>
+        <div class="info-box tip"><div class="info-icon">💡</div><div class="info-content"><strong>מיזוג/פיצול:</strong>ניתן למזג עצירה לאירוע שלפניה או אחריה, וגם לפצל אירוע לשני חלקים נפרדים.</div></div>`,
+        bodyEn: `<p>4 classification groups for stoppages:</p>
+        <div class="screen-demo">
+          <div class="screen-demo-bar"><div class="demo-dot" style="background:#fbbf24"></div><span>Reason Groups</span></div>
+          <div class="screen-demo-body">
+            <div class="demo-row"><span>⏳</span><span>Waiting — waiting for material, operator, process</span></div>
+            <div class="demo-row"><span>📅</span><span>Planned DownTime — CIP, product changeover</span></div>
+            <div class="demo-row"><span>📝</span><span>Administrative Time — shift change</span></div>
+            <div class="demo-row highlight"><span>🔧</span><span>Fault — technical failure → requires location + fault code</span></div>
+          </div>
+        </div>
+        <div class="info-box tip"><div class="info-icon">💡</div><div class="info-content"><strong>Merge/Split:</strong>You can merge a stoppage with the adjacent event, or split an event into two separate parts.</div></div>`,
+      }
+    ],
+    quiz: 'downtime'
+  }
+];
+
+// ===================== QUIZ DATA =====================
+const quizzes = {
+  intro: {
+    titleHe: 'בחינה: מבוא למערכת',
+    titleEn: 'Quiz: System Introduction',
+    questions: [
+      {
+        qHe: 'מה ראשי תיבות של MES?',
+        qEn: 'What does MES stand for?',
+        opts: { he: ['Manufacturing Execution System','Management Enterprise Software','Machine Execution Service','Material Entry System'], en: ['Manufacturing Execution System','Management Enterprise Software','Machine Execution Service','Material Entry System'] },
+        correct: 0,
+        expHe: 'MES = Manufacturing Execution System — מערכת לניהול ריצפת הייצור.',
+        expEn: 'MES = Manufacturing Execution System — a system for managing the production floor.'
+      },
+      {
+        qHe: 'מאיפה מגיעות ה-Orders (הזמנות) למערכת?',
+        qEn: 'Where do Orders come into the MES system from?',
+        opts: { he: ['מהמפעיל ידנית','מה-SAP (ERP)','מ-Excel','ממנהל המשמרת'], en: ['Manually from the operator','From SAP (ERP)','From Excel','From the Shift Manager'] },
+        correct: 1,
+        expHe: 'ה-Orders מגיעות אוטומטית מה-SAP, עם כל פרטי הייצור הנדרשים.',
+        expEn: 'Orders arrive automatically from SAP, with all required production details.'
+      },
+      {
+        qHe: 'כמה סוגי MTU קיימים במערכת?',
+        qEn: 'How many types of MTU exist in the system?',
+        opts: { he: ['2','3','4','5'], en: ['2','3','4','5'] },
+        correct: 2,
+        expHe: 'קיימים 4 סוגי MTU: HU, LOT, SEMI, FG.',
+        expEn: 'There are 4 types of MTU: HU, LOT, SEMI, FG.'
+      },
+      {
+        qHe: 'מה ההבדל בין Order ל-Work Order?',
+        qEn: 'What is the difference between an Order and a Work Order?',
+        opts: { he: ['אין הבדל — הם זהים','Order מגיעה מ-SAP; WO קיים רק ב-MES','WO מגיעה מ-SAP; Order קיים רק ב-MES','Order לייצור, WO לאריזה'], en: ["There's no difference — they're identical",'Order comes from SAP; WO exists only in MES','WO comes from SAP; Order exists only in MES','Order for production, WO for packing'] },
+        correct: 1,
+        expHe: 'Order — מגיעה מ-SAP ומכילה מה לייצר. Work Order — קיים רק ב-MES ומייצג את הביצוע בפועל.',
+        expEn: 'Order — comes from SAP with production details. Work Order — exists only in MES and represents actual execution.'
+      },
+      {
+        qHe: 'מה קורה כשסורקים MTU ב-MES?',
+        qEn: 'What happens when you scan an MTU in MES?',
+        opts: { he: ['נוצר מסמך הדפסה','המערכת מאמתת מול SAP שהחומר תקף','החומר נמחק מהמחסן מיד','כלום — זו רק לצורך תיעוד'], en: ['A print document is created','The system validates with SAP that the material is valid','The material is immediately deleted from warehouse','Nothing — it is only for documentation'] },
+        correct: 1,
+        expHe: 'בעת סריקת MTU, המערכת מבצעת אימות מול SAP: האם החומר זמין? האם פג תוקפו?',
+        expEn: 'When scanning an MTU, the system validates with SAP: Is the material available? Has it expired?'
+      }
+    ]
+  },
+  operator: {
+    titleHe: 'בחינה: תהליך המפעיל',
+    titleEn: 'Quiz: Operator Workflow',
+    questions: [
+      {
+        qHe: 'מה הדבר הראשון שמפעיל עושה לאחר כניסה למערכת?',
+        qEn: 'What is the first thing an operator does after logging in?',
+        opts: { he: ['פותח Work Order','מגדיר ציוד ב-Production Set-Up','בודק את מסך האיכות','מדווח נפל'], en: ['Opens a Work Order','Sets equipment in Production Set-Up','Checks the quality screen','Reports scrap'] },
+        correct: 1,
+        expHe: 'הדבר הראשון — להגדיר ב-Production Set-Up את הקו/מכונה שעובדים עליה, ולשמור.',
+        expEn: 'First thing — set the line/machine you\'re working on in Production Set-Up, and save.'
+      },
+      {
+        qHe: 'למה כדאי ללחוץ "Group By = שם מוצר" במסך הפק"עות?',
+        qEn: 'Why is it useful to click "Group By = Material Name" in the WO screen?',
+        opts: { he: ['לסינון לפי תאריך','כדי לראות פק"עות לפי מוצר — מקל על מציאת הפק"ע הנכונה','לשינוי צבע הרשומות','זה חובה לפני התחלה'], en: ['To filter by date','To see WOs by product — makes it easier to find the right WO','To change record colors','It is mandatory before starting'] },
+        correct: 1,
+        expHe: '"Group By = שם מוצר" מארגן את הפק"עות לפי מוצר — מונע בחירת פק"ע שגויה!',
+        expEn: '"Group By = Material Name" organizes WOs by product — prevents selecting the wrong WO!'
+      },
+      {
+        qHe: 'מה קורה כאשר מנסים לשייך פק"ע למכונה שכבר עם פק"ע פעילה?',
+        qEn: 'What happens when you try to assign a WO to a machine that already has an active WO?',
+        opts: { he: ['הפק"ע הישנה נמחקת','מתקבלת הודעת שגיאה','שתי הפק"עות רצות במקביל','המערכת שואלת לאישור'], en: ['The old WO is deleted','An error message is received','Both WOs run in parallel','The system asks for confirmation'] },
+        correct: 1,
+        expHe: 'מכונה יכולה לרוץ עם פק"ע אחת בלבד. ניסיון לשייך שנייה — יגרור הודעת שגיאה.',
+        expEn: 'A machine can only run one WO at a time. Trying to assign a second one will trigger an error message.'
+      },
+      {
+        qHe: 'למה פק"ע יכולה לעבור לסטטוס PAUSED?',
+        qEn: 'Why can a WO change to PAUSED status?',
+        opts: { he: ['תקלה במערכת','המפעיל שכח לסיים','המערכת משהה בין משימות — זה תקין!','אין חומרים זמינים'], en: ['System malfunction','The operator forgot to finish','The system pauses between tasks — this is normal!','No materials available'] },
+        correct: 2,
+        expHe: 'PAUSED הוא סטטוס תקין — המערכת משהה בין משימות. יש לעבור למשימה הבאה ולחץ Play.',
+        expEn: 'PAUSED is a normal status — the system pauses between tasks. Move to the next task and press Play.'
+      },
+      {
+        qHe: 'לאיזה סטטוס משנים פק"ע בסיום יום העבודה?',
+        qEn: 'To which status should you change a WO at end of the work day?',
+        opts: { he: ['PAUSED','STOPPED','COMPLETED','CLOSED'], en: ['PAUSED','STOPPED','COMPLETED','CLOSED'] },
+        correct: 2,
+        expHe: 'סטטוס COMPLETED — שולח דיווח ייצור אוטומטי ל-SAP.',
+        expEn: 'COMPLETED status — sends automatic production report to SAP.'
+      }
+    ]
+  },
+  consumption: {
+    titleHe: 'בחינה: צריכת חומרים',
+    titleEn: 'Quiz: Material Consumption',
+    questions: [
+      {
+        qHe: 'מה זה חומר "Backflush" (BF)?',
+        qEn: 'What is a "Backflush" (BF) material?',
+        opts: { he: ['חומר שנזרק לפסולת','חומר שנצרך אוטומטית — לא מופיע ברשימת הניפוק','חומר מוחזר לאחסון','חומר שדורש אישור מנהל'], en: ['A material that is discarded as waste','A material consumed automatically — not appearing in the issue list','A material returned to storage','A material requiring manager approval'] },
+        correct: 1,
+        expHe: 'BF = Backflush — חומרים שנצרכים אוטומטית. אין צורך לסרוק אותם ידנית.',
+        expEn: 'BF = Backflush — materials consumed automatically. No need to scan them manually.'
+      },
+      {
+        qHe: 'סרקת MTU בטעות. מה עושים?',
+        qEn: 'You scanned the wrong MTU. What do you do?',
+        opts: { he: ['אין מה לעשות, צריך לסיים', 'לוחצים על כפתור "–" ליד הצריכה לביטולה','מתקשרים ל-Super User מיד','סוגרים את הדפדפן ומתחילים מחדש'], en: ['Nothing can be done, just complete it','Click the "–" button next to the consumption to cancel it','Call Super User immediately','Close browser and start over'] },
+        correct: 1,
+        expHe: 'לחץ על "Material" ← אחר כך על כפתור "–" ליד הרשומה השגויה — הצריכה תבוטל.',
+        expEn: 'Click "Material" ← then the "–" button next to the wrong record — the consumption will be cancelled.'
+      },
+      {
+        qHe: 'מה עושים כשמופיעה אזהרת תפוגה בעת צריכה?',
+        qEn: 'What do you do when an expiry warning appears during consumption?',
+        opts: { he: ['ממשיכים — זה רק אזהרה','עוצרים ומדווחים ל-Super User/מנהל משמרת','לוחצים "אישור" ועוברים לחומר הבא','מחזירים את החומר למחסן לבד'], en: ['Continue — it is just a warning','Stop and report to Super User/Shift Manager','Click "OK" and move to the next material','Return the material to the warehouse yourself'] },
+        correct: 1,
+        expHe: 'אזהרת תפוגה = עצירה מלאה! לא ממשיכים לצרוך ללא אישור מנהל איכות/משמרת.',
+        expEn: 'Expiry warning = full stop! Do not continue consuming without quality/shift manager approval.'
+      },
+      {
+        qHe: 'כמה דרכים יש לבחור MTU במסך הצריכה?',
+        qEn: 'How many ways are there to select an MTU in the consumption screen?',
+        opts: { he: ['1 — סריקת ברקוד בלבד','2 — סריקה או חיפוש ידני','3 — סריקה, חיפוש, קלידה ישירה','4'], en: ['1 — barcode scan only','2 — scan or manual search','3 — scan, search, or direct entry','4'] },
+        correct: 1,
+        expHe: '2 דרכים: (1) סריקת ברקוד, (2) לחיצה על "..." לחיפוש ידני מהרשימה.',
+        expEn: '2 ways: (1) barcode scan, (2) clicking "..." for manual search from the list.'
+      }
+    ]
+  },
+  quality: {
+    titleHe: 'בחינה: ניהול איכות',
+    titleEn: 'Quiz: Quality Management',
+    questions: [
+      {
+        qHe: 'מאיפה מגיעות בדיקות האיכות (Inspection Lots)?',
+        qEn: 'Where do quality inspections (Inspection Lots) come from?',
+        opts: { he: ['המפעיל יוצר אותן ידנית','מה-SAP באמצעות ממשק','מנהל האיכות מגדיר במערכת','נוצרות אוטומטית ב-MES'], en: ['The operator creates them manually','From SAP via interface','The quality manager defines in the system','Created automatically in MES'] },
+        correct: 1,
+        expHe: 'כל בדיקות האיכות (Inspection Lots) מגיעות מ-SAP דרך הממשק — לא נוצרות ידנית.',
+        expEn: 'All quality inspections (Inspection Lots) come from SAP via interface — not created manually.'
+      },
+      {
+        qHe: 'מה נדרש לאישור SETUP לפני תחילת ייצור?',
+        qEn: 'What is required for SETUP approval before starting production?',
+        opts: { he: ['אישור המפעיל בלבד','אישור מנהל בלבד','חתימת מנהל משמרת + מוודא (חתימה אלקטרונית)','אין צורך — SETUP הוא רשות'], en: ['Operator approval only','Manager approval only','Shift Manager + verifier signature (electronic)','Not needed — SETUP is optional'] },
+        correct: 2,
+        expHe: 'SETUP דורש חתימה אלקטרונית של מנהל משמרת ומוודא — ייצור לא יתחיל ללא אישורים אלה!',
+        expEn: 'SETUP requires electronic signature from Shift Manager and verifier — production cannot start without these approvals!'
+      },
+      {
+        qHe: 'מה קורה כשתוצאת בדיקה חורגת מהגבולות?',
+        qEn: 'What happens when an inspection result exceeds the limits?',
+        opts: { he: ['כלום — זה רק לתיעוד','המערכת שולחת התראה אוטומטית','הקו נעצר מיידית','הפק"ע נמחקת'], en: ['Nothing — it is just for documentation','The system sends an automatic alert','The line stops immediately','The WO is deleted'] },
+        correct: 1,
+        expHe: 'תוצאה חורגת → המערכת שולחת התראה (Notification) אוטומטית לגורמים המוגדרים.',
+        expEn: 'Out-of-spec result → the system automatically sends a Notification alert to the defined parties.'
+      }
+    ]
+  },
+  downtime: {
+    titleHe: 'בחינה: עצירות OEE',
+    titleEn: 'Quiz: Downtime & OEE',
+    questions: [
+      {
+        qHe: 'מה מייצג NEGEV-01 במסך העצירות?',
+        qEn: 'What does NEGEV-01 represent in the stoppages screen?',
+        opts: { he: ['מכונות אריזה','מכונות ייצור','כל המכונות במפעל','מכונות המחסן'], en: ['Packaging machines','Production machines','All factory machines','Warehouse machines'] },
+        correct: 1,
+        expHe: 'NEGEV-01 = מכונות ייצור. NEGEV-02 = מכונות אריזה.',
+        expEn: 'NEGEV-01 = Production machines. NEGEV-02 = Packaging machines.'
+      },
+      {
+        qHe: 'איזה צבע מייצג עצירה שלא סווגה ודורשת פעולה?',
+        qEn: 'Which color represents an unclassified stoppage requiring action?',
+        opts: { he: ['ירוק','אדום','כחול','אפור'], en: ['Green','Red','Blue','Gray'] },
+        correct: 3,
+        expHe: 'אפור = עצירה לא מסווגת — יש לסווג אותה לאחת מ-4 קטגוריות.',
+        expEn: 'Gray = unclassified stoppage — must be classified into one of the 4 categories.'
+      },
+      {
+        qHe: 'איזה סיווג עצירה דורש גם בחירת מיקום וקוד תקלה?',
+        qEn: 'Which stoppage classification also requires selecting a location and fault code?',
+        opts: { he: ['Waiting','Planned DownTime','Administrative Time','Fault (תקלה)'], en: ['Waiting','Planned DownTime','Administrative Time','Fault'] },
+        correct: 3,
+        expHe: 'רק "Fault" (תקלה) דורש ← בחירת מיקום (Location) + קוד תקלה (Fault Code).',
+        expEn: 'Only "Fault" requires ← location selection + fault code.'
+      }
+    ]
+  }
+};
+
+// ===================== VIDEO DATA =====================
+const videoData = {
+  intro1: {
+    icon: '🏭', titleHe: 'מהו MES? — מבוא', titleEn: 'What is MES? — Introduction',
+    duration: 150,
+    stepsHe: ['MES = Manufacturing Execution System','מחבר בין SAP לרצפת הייצור','מעקב בזמן אמת אחר ייצור','ניהול איכות ועצירות','שיקוף נתונים לשיפור מתמיד'],
+    stepsEn: ['MES = Manufacturing Execution System','Connects SAP to the production floor','Real-time production tracking','Quality and downtime management','Data visualization for continuous improvement']
+  },
+  order1: {
+    icon: '📋', titleHe: 'הזמנה → פקודת עבודה', titleEn: 'Order → Work Order',
+    duration: 105,
+    stepsHe: ['Order מגיעה אוטומטית מ-SAP','מכילה: מוצר, כמות, קו, חומרים','WO נפתחת אוטומטית ב-MES','שינוי סטטוס: CREATED → STARTED','בסיום: COMPLETED → דיווח ל-SAP'],
+    stepsEn: ['Order arrives automatically from SAP','Contains: product, quantity, line, materials','WO opens automatically in MES','Status change: CREATED → STARTED','At end: COMPLETED → reports to SAP']
+  },
+  setup1: {
+    icon: '⚙️', titleHe: 'הגדרת ציוד', titleEn: 'Equipment Setup',
+    duration: 80,
+    stepsHe: ['כניסה ל-Production Set-Up','בחר: ייצור או אריזה?','בחר קו/מכונה ספציפיים','לחץ שמור','המערכת יודעת עכשיו איפה אתה!'],
+    stepsEn: ['Enter Production Set-Up','Select: Production or Packaging?','Choose specific line/machine','Click Save','The system now knows where you are!']
+  },
+  start_wo: {
+    icon: '▶️', titleHe: 'הפעלת פקודת עבודה', titleEn: 'Starting a Work Order',
+    duration: 70,
+    stepsHe: ['מסמן ✓ ליד הפק"ע','לוחץ "שינוי סטטוס"','בוחר STARTED','לוחץ שמור','המשימות מופיעות ב-Task List'],
+    stepsEn: ['Check ✓ next to WO','Click "Change Status"','Select STARTED','Click Save','Tasks appear in Task List']
+  },
+  scan_mtu: {
+    icon: '📦', titleHe: 'סריקת MTU', titleEn: 'Scanning MTU',
+    duration: 90,
+    stepsHe: ['פתח משימת צריכה','עמוד מול המשטח/מיכל','כוון סורק לברקוד','סרוק — המערכת מאמתת מול SAP','בחר כמות ולחץ שמור'],
+    stepsEn: ['Open consumption task','Stand in front of pallet/container','Aim scanner at barcode','Scan — system validates with SAP','Select quantity and click Save']
+  },
+  setup_qual: {
+    icon: '🔬', titleHe: 'SETUP ואישור', titleEn: 'SETUP and Approval',
+    duration: 120,
+    stepsHe: ['בתחילת הזמנה — משימת SETUP נפתחת','המפעיל ממלא טופס בדיקה','מנהל משמרת מקבל התראה','חתימה אלקטרונית של מנהל','חתימה של מוודא → ייצור מתחיל'],
+    stepsEn: ['At order start — SETUP task opens','Operator fills inspection form','Shift Manager receives alert','Manager signs electronically','Verifier signs → production begins']
+  }
+};
+
+// ===================== GLOSSARY =====================
+const glossaryItems = [
+  { term: 'פק"ע / פקע', termEn: 'Work Order (WO)', defHe: 'פקודת עבודה — ייצוג ריצה ספציפית ב-MES המבוסס על הזמנה מ-SAP.', defEn: 'Work Order — representation of a specific production run in MES based on a SAP order.' },
+  { term: 'הזמנה', termEn: 'Order', defHe: 'הזמנת ייצור שמגיעה מ-SAP ומכילה: מה לייצר, כמה ואיזה חומרים.', defEn: 'Production order that comes from SAP containing: what to produce, quantity and materials.' },
+  { term: 'ציוד', termEn: 'Equipment', defHe: 'כל משאב המוגדר ב-MES: מכונה, קו ייצור, מיכל, אזור איחסון.', defEn: 'Any resource defined in MES: machine, production line, tank, storage area.' },
+  { term: 'MTU — יחידת מטען', termEn: 'Material Tracking Unit', defHe: 'יחידה ניתנת למעקב של חומר — HU, LOT, SEMI, FG. כל אחד עם ברקוד ייחודי.', defEn: 'A traceable unit of material — HU, LOT, SEMI, FG. Each with a unique barcode.' },
+  { term: 'צריכה', termEn: 'Consumption', defHe: 'רישום שחומר גלם נצרך בתהליך הייצור — ידנית (סריקה) או אוטומטית.', defEn: 'Recording that raw material was consumed in production — manually (scan) or automatically.' },
+  { term: 'BF / Backflush', termEn: 'Backflush', defHe: 'חומרים שנצרכים אוטומטית על ידי המערכת — המפעיל לא צריך לסרוק אותם.', defEn: 'Materials consumed automatically by the system — the operator does not need to scan them.' },
+  { term: 'נפל', termEn: 'Scrap', defHe: 'כמות מוצרים שנפסלו במהלך הייצור — מדווח ידנית עם סיבה.', defEn: 'Quantity of products rejected during production — reported manually with a reason.' },
+  { term: 'פסולת', termEn: 'Waste', defHe: 'חומר שאבד או הושלך במהלך הייצור — שונה מנפל.', defEn: 'Material that was lost or discarded during production — different from scrap.' },
+  { term: 'CIP', termEn: 'CIP', defHe: 'Clean-In-Place — תהליך ניקוי טנקים וקווים שחייב להירשם ב-MES.', defEn: 'Clean-In-Place — cleaning process for tanks and lines that must be registered in MES.' },
+  { term: 'OEE', termEn: 'Overall Equipment Effectiveness', defHe: 'מדד יעילות ציוד כולל: זמינות × ביצועים × איכות. משקף ניצול מכונות.', defEn: 'Overall Equipment Effectiveness: Availability × Performance × Quality. Reflects machine utilization.' },
+  { term: 'SETUP', termEn: 'SETUP', defHe: 'תהליך הגדרה בתחילת הזמנה — דורש חתימת מנהל משמרת ומוודא לפני תחילת ייצור.', defEn: 'Setup process at the start of an order — requires Shift Manager and verifier signature before production.' },
+  { term: 'Process Definition', termEn: 'Process Definition', defHe: 'הגדרת תהליך עסקי שמכיל סדרת משימות — נוצרת ע"י IT או הספק.', defEn: 'Business process definition containing a sequence of tasks — created by IT or the vendor.' },
+  { term: 'Signal Rule', termEn: 'Signal Rule', defHe: 'כלל המכיל פעולה בודדת (כמו שליחת התראה) שמופעלת על ידי אירוע מסוים.', defEn: 'A rule containing a single action (like sending an alert) triggered by a specific event.' },
+  { term: 'Task List', termEn: 'Operator Task List', defHe: 'מסך המשימות של המפעיל — מציג את כל המשימות הפעילות לפי הפק"ע או הקו.', defEn: 'Operator\'s task screen — shows all active tasks by WO or production line.' },
+  { term: 'Inspection Lot', termEn: 'Inspection Lot', defHe: 'מנת בדיקת איכות שמגיעה מ-SAP — מגדירה מה לבדוק, מתי ובאיזו תדירות.', defEn: 'Quality inspection batch from SAP — defines what to check, when and at what frequency.' },
+];
+
+// ===================== CORE FUNCTIONS =====================
+function setLang(l) {
+  lang = l;
+  document.documentElement.lang = l;
+  document.documentElement.dir = l === 'he' ? 'rtl' : 'ltr';
+  document.body.className = l === 'en' ? 'ltr' : '';
+  showScreen('home');
+  document.getElementById('bottom-nav').style.display = 'flex';
+  renderHome();
+  renderGlossary();
+  updateAllLangText();
+}
+
+function toggleLang() {
+  setLang(lang === 'he' ? 'en' : 'he');
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  // Update nav
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if (id === 'home') document.getElementById('nav-home')?.classList.add('active');
+  if (id === 'glossary') document.getElementById('nav-glos')?.classList.add('active');
+}
+
+function updateAllLangText() {
+  document.getElementById('nav-label-home').textContent = t('navHome');
+  document.getElementById('nav-label-quiz').textContent = t('navQuiz');
+  document.getElementById('nav-label-glos').textContent = t('navGlos');
+  document.getElementById('nav-label-prog').textContent = t('navProg');
+  document.getElementById('glos-title').textContent = t('glossTitle');
+  document.getElementById('glos-search').placeholder = t('glossSearch');
+}
+
+// ===================== HOME =====================
+function renderHome() {
+  const pct = calcProgress();
+  document.getElementById('hero-welcome').textContent = t('welcome');
+  document.getElementById('hero-title').innerHTML = t('heroTitle');
+  document.getElementById('prog-label').textContent = t('overallProgress');
+  document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('main-progress').style.width = pct + '%';
+  // ring
+  const offset = 97.4 - (97.4 * pct / 100);
+  document.getElementById('ring-fill').style.strokeDashoffset = offset;
+
+  const grid = document.getElementById('home-grid');
+  grid.innerHTML = `<div class="section-label">${t('modules')}</div>`;
+
+  modules.forEach(m => {
+    const status = progress[m.id] || 'new';
+    const badge = status === 'done' ? `<span class="status-badge done">${t('done')}</span>` :
+                  status === 'progress' ? `<span class="status-badge prog">${t('inProgress')}</span>` :
+                  `<span class="status-badge new">${t('notStarted')}</span>`;
+    const title = lang === 'he' ? m.titleHe : m.titleEn;
+    const subtitle = lang === 'he' ? m.subtitleHe : m.subtitleEn;
+    const btnText = status === 'done' ? t('takeQuiz') : status === 'progress' ? t('continueLesson') : t('startLesson');
+
+    grid.innerHTML += `
+    <div class="module-card" style="--card-accent:${m.accent};--card-icon-bg:${m.iconBg}" onclick="openModule('${m.id}')">
+      <div class="module-icon">${m.icon}</div>
+      <div class="module-info">
+        <div class="module-title">${title}</div>
+        <div class="module-meta">
+          <span>${m.duration} ${t('min')}</span>
+          <span class="dot"></span>
+          <span>${m.steps.length} ${t('steps')}</span>
+        </div>
+      </div>
+      <div class="module-status">${badge}</div>
+    </div>`;
+  });
+
+  grid.innerHTML += `<div class="section-label" style="margin-top:8px;">${t('quickActions')}</div>
+  <div class="quick-actions">
+    <div class="quick-btn" onclick="openQuickQuiz()"><div class="q-icon">✏️</div><div class="q-label">${t('quickQuiz')}</div></div>
+    <div class="quick-btn" onclick="showGlossary()"><div class="q-icon">📖</div><div class="q-label">${t('quickGloss')}</div></div>
+    <div class="quick-btn" onclick="showProgressScreen()"><div class="q-icon">📊</div><div class="q-label">${t('quickProgress')}</div></div>
+    <div class="quick-btn" onclick="showHelp()"><div class="q-icon">💡</div><div class="q-label">${t('quickHelp')}</div></div>
+  </div>`;
+}
+
+function calcProgress() {
+  const done = Object.values(progress).filter(v => v === 'done').length;
+  return Math.round((done / modules.length) * 100);
+}
+
+function showHomeNav() {
+  showScreen('home');
+  renderHome();
+}
+
+// ===================== LESSON =====================
+function openModule(id) {
+  currentModule = modules.find(m => m.id === id);
+  currentStep = 0;
+  if (progress[id] !== 'done') progress[id] = 'progress';
+  showScreen('lesson');
+  document.getElementById('lesson-title').textContent = lang === 'he' ? currentModule.titleHe : currentModule.titleEn;
+  document.getElementById('lesson-subtitle').textContent = lang === 'he' ? currentModule.subtitleHe : currentModule.subtitleEn;
+  renderStep();
+}
+
+function renderStep() {
+  const steps = currentModule.steps;
+  const s = steps[currentStep];
+  document.getElementById('step-counter').textContent = `${currentStep + 1}/${steps.length}`;
+  
+  // Dots
+  let dots = '';
+  steps.forEach((_, i) => {
+    const cls = i === currentStep ? 'active' : i < currentStep ? 'done' : '';
+    dots += `<div class="step-dot ${cls}"></div>`;
+  });
+  document.getElementById('step-dots').innerHTML = dots;
+
+  // Content
+  const title = lang === 'he' ? s.titleHe : s.titleEn;
+  const body = lang === 'he' ? s.bodyHe : s.bodyEn;
+  document.getElementById('step-content').innerHTML = `
+    <div class="step-card">
+      <div class="step-number">${lang === 'he' ? 'שלב' : 'Step'} ${currentStep + 1}</div>
+      <h3>${title}</h3>
+      ${body}
+    </div>`;
+
+  // Buttons
+  const isLast = currentStep === steps.length - 1;
+  document.getElementById('btn-prev').textContent = t('prev');
+  document.getElementById('btn-prev').disabled = currentStep === 0;
+  document.getElementById('btn-next').textContent = isLast ? t('complete') : t('next');
+  document.getElementById('btn-next').style.background = isLast ? '#7c3aed' : '';
+}
+
+function nextStep() {
+  if (currentStep < currentModule.steps.length - 1) {
+    currentStep++;
+    renderStep();
+    document.getElementById('step-content').scrollTop = 0;
+  } else {
+    // Complete lesson
+    progress[currentModule.id] = 'done';
+    startQuiz(currentModule.quiz);
+    renderHome();
+  }
+}
+
+function prevStep() {
+  if (currentStep > 0) {
+    currentStep--;
+    renderStep();
+    document.getElementById('step-content').scrollTop = 0;
+  }
+}
+
+function goBack() {
+  showScreen('home');
+  renderHome();
+}
+
+// ===================== QUIZ =====================
+function startQuiz(quizId) {
+  currentQuiz = quizzes[quizId];
+  currentQuizQ = 0;
+  quizScore = 0;
+  showScreen('quiz');
+  renderQuestion();
+}
+
+function openQuickQuiz() {
+  // Pick a random quiz
+  const ids = Object.keys(quizzes);
+  const rId = ids[Math.floor(Math.random() * ids.length)];
+  startQuiz(rId);
+  document.getElementById('nav-learn')?.classList.add('active');
+  document.getElementById('nav-home')?.classList.remove('active');
+}
+
+function renderQuestion() {
+  const q = currentQuiz.questions[currentQuizQ];
+  const total = currentQuiz.questions.length;
+  const pct = ((currentQuizQ) / total * 100) + '%';
+  
+  document.getElementById('quiz-prog-fill').style.width = pct;
+  document.getElementById('quiz-q-label').textContent = `${t('question')} ${currentQuizQ + 1} ${t('of')} ${total}`;
+  document.getElementById('quiz-question').textContent = lang === 'he' ? q.qHe : q.qEn;
+
+  const opts = q.opts[lang];
+  const letters = ['א','ב','ג','ד'];
+  const lettersEn = ['A','B','C','D'];
+  let html = '';
+  opts.forEach((opt, i) => {
+    const letter = lang === 'he' ? letters[i] : lettersEn[i];
+    html += `<div class="quiz-option" onclick="selectOption(this, ${i})" data-idx="${i}">
+      <div class="opt-circle">${letter}</div>
+      <span>${opt}</span>
+    </div>`;
+  });
+  document.getElementById('quiz-options').innerHTML = html;
+  document.getElementById('quiz-feedback').className = 'quiz-feedback';
+  document.getElementById('quiz-feedback').style.display = 'none';
+  
+  const nextBtn = document.getElementById('quiz-next-btn');
+  nextBtn.style.display = 'none';
+  nextBtn.textContent = currentQuizQ === total - 1 ? t('finishQuiz') : t('nextQ');
+  
+  quizAnswered = false;
+}
+
+function selectOption(el, idx) {
+  if (quizAnswered) return;
+  quizAnswered = true;
+  
+  const q = currentQuiz.questions[currentQuizQ];
+  const isCorrect = idx === q.correct;
+  if (isCorrect) quizScore++;
+
+  document.querySelectorAll('.quiz-option').forEach((opt, i) => {
+    if (i === q.correct) opt.classList.add('correct');
+    else if (i === idx && !isCorrect) opt.classList.add('wrong');
+    opt.style.cursor = 'default';
+  });
+
+  const fb = document.getElementById('quiz-feedback');
+  fb.className = 'quiz-feedback show ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
+  fb.style.display = 'block';
+  document.getElementById('fb-title').textContent = isCorrect ? t('correct') : t('wrong');
+  document.getElementById('fb-text').textContent = lang === 'he' ? q.expHe : q.expEn;
+
+  document.getElementById('quiz-next-btn').style.display = 'block';
+}
+
+function quizNext() {
+  currentQuizQ++;
+  if (currentQuizQ >= currentQuiz.questions.length) {
+    showResults();
+  } else {
+    renderQuestion();
+    document.querySelector('.quiz-body').scrollTop = 0;
+  }
+}
+
+function showResults() {
+  const total = currentQuiz.questions.length;
+  const pct = Math.round((quizScore / total) * 100);
+  const pass = pct >= 60;
+  
+  document.getElementById('result-icon').textContent = pass ? '🎉' : '📚';
+  document.getElementById('result-score').textContent = pct + '%';
+  document.getElementById('result-label').textContent = `${quizScore}/${total} ${t('score')}`;
+  document.getElementById('result-message').textContent = pass ? t('great') : '💪';
+  document.getElementById('result-sub').textContent = pass ? t('pass') : t('fail');
+  document.getElementById('btn-home-result').textContent = t('homeResult');
+  document.getElementById('btn-retry').textContent = t('retry');
+  showScreen('results');
+}
+
+function goHome() { showScreen('home'); renderHome(); }
+function retryQuiz() { currentQuizQ = 0; quizScore = 0; startQuiz(Object.keys(quizzes).find(k => quizzes[k] === currentQuiz)); }
+
+// ===================== GLOSSARY =====================
+function showGlossary() {
+  showScreen('glossary');
+  document.getElementById('glos-title').textContent = t('glossTitle');
+  document.getElementById('glos-search').placeholder = t('glossSearch');
+  renderGlossary();
+  document.getElementById('nav-glos')?.classList.add('active');
+  document.getElementById('nav-home')?.classList.remove('active');
+}
+
+function renderGlossary(filter = '') {
+  const list = document.getElementById('glos-list');
+  const filtered = glossaryItems.filter(item => {
+    const q = filter.toLowerCase();
+    return item.term.includes(filter) || item.termEn.toLowerCase().includes(q) ||
+           item.defHe.includes(filter) || item.defEn.toLowerCase().includes(q);
+  });
+  list.innerHTML = filtered.map(item => `
+    <div class="glossary-item">
+      <div class="glossary-term-en">${item.termEn}</div>
+      <div class="glossary-term">${item.term}</div>
+      <div class="glossary-def">${lang === 'he' ? item.defHe : item.defEn}</div>
+    </div>`).join('');
+}
+
+function filterGlossary(val) { renderGlossary(val); }
+
+// ===================== PROGRESS SCREEN =====================
+function showProgressScreen() {
+  const pct = calcProgress();
+  const done = Object.values(progress).filter(v => v === 'done').length;
+  const html = `
+  <div style="padding:24px;">
+    <div style="font-size:18px;font-weight:800;margin-bottom:20px;">${lang === 'he' ? 'ההתקדמות שלי' : 'My Progress'}</div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px;text-align:center;">
+      <div style="font-size:56px;font-weight:800;color:var(--cyan);">${pct}%</div>
+      <div style="font-size:14px;color:var(--text2);">${done}/${modules.length} ${lang === 'he' ? 'מודולים הושלמו' : 'modules completed'}</div>
+    </div>
+    ${modules.map(m => {
+      const s = progress[m.id] || 'new';
+      const title = lang === 'he' ? m.titleHe : m.titleEn;
+      const color = s === 'done' ? '#22c55e' : s === 'progress' ? '#fbbf24' : '#64748b';
+      const icon = s === 'done' ? '✅' : s === 'progress' ? '🔄' : '⭕';
+      return `<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);">
+        <span style="font-size:20px;">${m.icon}</span>
+        <span style="flex:1;font-size:14px;font-weight:600;">${title}</span>
+        <span style="font-size:16px;">${icon}</span>
+      </div>`;
+    }).join('')}
+  </div>`;
+
+  // Show in a temporary screen
+  const homeEl = document.getElementById('screen-home');
+  const tempDiv = document.createElement('div');
+  tempDiv.id = 'screen-prog-temp';
+  tempDiv.className = 'screen active';
+  tempDiv.style.cssText = 'background:var(--bg);overflow-y:auto;padding-bottom:72px;';
+  tempDiv.innerHTML = `<div class="app-header"><button class="back-btn" onclick="document.getElementById('screen-prog-temp').remove();showScreen('home');">‹</button><div style="flex:1;font-size:17px;font-weight:700;">${lang==='he'?'התקדמות':'Progress'}</div></div>${html}`;
+  document.body.appendChild(tempDiv);
+  document.querySelectorAll('.screen').forEach(s => { if(s !== tempDiv) s.classList.remove('active'); });
+}
+
+function showHelp() {
+  const items = [
+    { q: lang==='he'?'הWO עבר ל-PAUSED':'WO changed to PAUSED?', a: lang==='he'?'זה תקין! עבור למשימה הבאה ולחץ Play.':'This is normal! Move to the next task and press Play.' },
+    { q: lang==='he'?'סרקתי MTU בטעות':'Scanned wrong MTU?', a: lang==='he'?'לחץ על "Material" ← כפתור "–" ← ביטול.':'Click "Material" ← "–" button ← cancel.' },
+    { q: lang==='he'?'חומר לא מופיע בצריכה':'Material not in consumption list?', a: lang==='he'?'כנראה Backflush — נצרך אוטומטית.':'Probably Backflush — consumed automatically.' },
+    { q: lang==='he'?'שגיאה בשיוך ציוד':'Error assigning equipment?', a: lang==='he'?'המכונה כבר עם פק"ע פעילה — בדוק ופנה ל-Super User.':'Machine already has active WO — check and contact Super User.' },
+    { q: lang==='he'?'אזהרת תפוגה':'Expiry warning?', a: lang==='he'?'עצור! דווח ל-Super User מיד.':'Stop! Report to Super User immediately.' },
+  ];
+  const html = items.map(i => `
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden;">
+      <div style="background:var(--bg2);padding:10px 14px;font-weight:700;font-size:13px;color:var(--cyan);">${i.q}</div>
+      <div style="padding:10px 14px;font-size:13px;color:var(--text2);">${i.a}</div>
+    </div>`).join('');
+  const tempDiv = document.createElement('div');
+  tempDiv.id = 'screen-help-temp';
+  tempDiv.className = 'screen active';
+  tempDiv.style.cssText = 'background:var(--bg);overflow-y:auto;padding-bottom:72px;';
+  tempDiv.innerHTML = `<div class="app-header"><button class="back-btn" onclick="document.getElementById('screen-help-temp').remove();showScreen('home');">‹</button><div style="flex:1;font-size:17px;font-weight:700;">${lang==='he'?'עזרה מהירה':'Quick Help'}</div></div><div style="padding:16px;">${html}</div>`;
+  document.body.appendChild(tempDiv);
+  document.querySelectorAll('.screen').forEach(s => { if(s !== tempDiv) s.classList.remove('active'); });
+}
+
+// ===================== VIDEO PLAYER =====================
+function playVideo(id) {
+  const v = videoData[id];
+  if (!v) return;
+  document.getElementById('vid-icon').textContent = v.icon;
+  document.getElementById('vid-modal-title').textContent = lang === 'he' ? v.titleHe : v.titleEn;
+  
+  const steps = lang === 'he' ? v.stepsHe : v.stepsEn;
+  const container = document.getElementById('vid-steps-container');
+  container.innerHTML = steps.map((s, i) => `
+    <div class="vid-step" id="vs-${i}">
+      <span class="vs-icon">▸</span>${s}
+    </div>`).join('');
+
+  document.getElementById('video-modal').classList.add('open');
+  videoProgress = 0;
+  videoStepIdx = 0;
+  videoSteps = steps;
+  document.getElementById('vid-prog').style.width = '0%';
+  document.getElementById('vid-time').textContent = '0:00';
+  document.getElementById('vid-play-btn').textContent = '▶';
+  videoPlaying = false;
+  // Auto-start
+  setTimeout(() => toggleVideoPlay(v.duration), 300);
+}
+
+function toggleVideoPlay(duration) {
+  if (videoPlaying) {
+    clearInterval(videoTimer);
+    videoPlaying = false;
+    document.getElementById('vid-play-btn').textContent = '▶';
+    return;
+  }
+  const totalDur = duration || 120;
+  videoPlaying = true;
+  document.getElementById('vid-play-btn').textContent = '⏸';
+  const stepInterval = totalDur / videoSteps.length;
+  
+  videoTimer = setInterval(() => {
+    videoProgress += 0.5;
+    const pct = Math.min((videoProgress / totalDur) * 100, 100);
+    document.getElementById('vid-prog').style.width = pct + '%';
+    const mins = Math.floor(videoProgress / 60);
+    const secs = Math.floor(videoProgress % 60);
+    document.getElementById('vid-time').textContent = `${mins}:${secs.toString().padStart(2,'0')}`;
+    
+    const stepIdx = Math.min(Math.floor(videoProgress / stepInterval), videoSteps.length - 1);
+    if (stepIdx !== videoStepIdx) {
+      videoStepIdx = stepIdx;
+      document.getElementById(`vs-${stepIdx}`)?.classList.add('show');
+    }
+    if (stepIdx === 0 && videoProgress < 1) {
+      document.getElementById('vs-0')?.classList.add('show');
+    }
+    if (videoProgress >= totalDur) {
+      clearInterval(videoTimer);
+      videoPlaying = false;
+      document.getElementById('vid-play-btn').textContent = '▶';
+      // Show all steps
+      videoSteps.forEach((_, i) => document.getElementById(`vs-${i}`)?.classList.add('show'));
+    }
+  }, 500);
+}
+
+function closeVideo() {
+  clearInterval(videoTimer);
+  videoPlaying = false;
+  document.getElementById('video-modal').classList.remove('open');
+}
+
+// ===================== SERVICE WORKER =====================
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+
+// Init
+window.addEventListener('load', () => {
+  // Prevent scroll bounce
+  document.body.addEventListener('touchmove', e => {
+    if (e.target.closest('.step-content, .quiz-body, .glossary-list, .has-bottom-nav')) return;
+    e.preventDefault();
+  }, { passive: false });
+});
+</script>
+</body>
+</html>
